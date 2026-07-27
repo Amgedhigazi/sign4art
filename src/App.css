@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 2.5rem;
-  height: 84px;
+  height: 100px;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0,0,0,0.08);
@@ -17,7 +17,7 @@
   box-shadow: 0 2px 20px rgba(0,0,0,0.1);
 }
 .nav__logo { cursor: pointer; display: flex; align-items: center; }
-.nav__logo-img { height: 70px; width: auto; object-fit: contain; }
+.nav__logo-img { height: 86px; width: auto; object-fit: contain; }
 .nav__links { display: flex; list-style: none; gap: 2rem; }
 .nav__links button {
   color: #222;
@@ -319,8 +319,9 @@
 /* FOOTER */
 .footer { background: #050505; border-top: 1px solid var(--border); padding: 2.5rem; }
 .footer__inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
-.footer__logo { height: 44px; width: auto; }
+.footer__logo { height: 80px; width: auto; }
 .footer__copy { font-size: 0.78rem; color: var(--muted); }
+.footer__credit { font-size: 0.72rem; color: rgba(255,255,255,0.25); margin-top: 0.3rem; }
 .footer__socials { display: flex; gap: 1.5rem; }
 .footer__socials a { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; transition: color 0.2s; }
 .footer__socials a:hover { color: var(--gold); }

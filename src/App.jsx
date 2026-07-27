@@ -428,7 +428,10 @@ export default function App() {
       <footer className="footer">
         <div className="footer__inner">
           <img src={LOGO} alt="Sign4Art Store" className="footer__logo" />
-          <p className="footer__copy">© {new Date().getFullYear()} Sign4Art Store, Bochum. All rights reserved.</p>
+          <div>
+            <p className="footer__copy">© {new Date().getFullYear()} Sign4Art Store, Bochum. All rights reserved.</p>
+            <p className="footer__credit">Designed & developed by Amged Higazi</p>
+          </div>
           <div className="footer__socials">
             <a href="https://www.instagram.com/amgedhigazi" target="_blank" rel="noreferrer">Instagram</a>
             <a href="https://www.facebook.com/amgad.higazi.10" target="_blank" rel="noreferrer">Facebook</a>
