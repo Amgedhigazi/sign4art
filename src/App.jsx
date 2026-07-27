@@ -165,6 +165,9 @@ export default function App() {
   const closeEventPage = useCallback(() => {
     setEventPage(null)
     setFormSent(false)
+    setTimeout(() => {
+      document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })
+    }, 0)
   }, [])
 
   const openPkgPage = useCallback((pkg) => {
