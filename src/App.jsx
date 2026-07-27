@@ -129,6 +129,7 @@ export default function App() {
   const [pkgPage, setPkgPage] = useState(null)
   const [formSent, setFormSent] = useState(false)
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' })
+  const [activeVideo, setActiveVideo] = useState(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -316,18 +317,35 @@ export default function App() {
             <h2 className="section__title">Videos</h2>
             <p className="section__desc">Watch our workshops and studio sessions.</p>
           </div>
-          <div className="grid grid--2">
-            {VIDEOS.map(v => (
-              <div key={v.id} className="video-card">
-                <video
-                  className="video-card__frame"
-                  controls
-                  preload="metadata"
-                  src={v.src}
-                />
-                <p className="video-card__title">{v.title}</p>
-              </div>
-            ))}
+
+          {activeVideo && (
+            <div className="video-hero">
+              <button className="video-hero__close" onClick={() => setActiveVideo(null)}>✕</button>
+              <video
+                key={activeVideo.src}
+                className="video-hero__player"
+                controls
+                autoPlay
+                src={activeVideo.src}
+              />
+              <p className="video-hero__title">{activeVideo.title}</p>
+            </div>
+          )}
+
+          <div className="vcarousel">
+            <div className="vcarousel__track">
+              {[...VIDEOS, ...VIDEOS, ...VIDEOS].map((v, i) => (
+                <div
+                  key={i}
+                  className={`vcarousel__thumb${activeVideo?.id === v.id ? ' vcarousel__thumb--active' : ''}`}
+                  onClick={() => setActiveVideo(v)}
+                >
+                  <video src={v.src} preload="metadata" muted playsInline />
+                  <div className="vcarousel__overlay"><span className="vcarousel__play">▶</span></div>
+                  <p className="vcarousel__label">{v.title}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
