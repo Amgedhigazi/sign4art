@@ -106,9 +106,9 @@ const EVENTS = [
 ]
 
 const VIDEOS = [
-  { id: 1, title: 'Workshop Highlights', src: '/videos/events.mp4' },
+  { id: 1, title: 'Events Covering', src: '/videos/events.mp4' },
   { id: 2, title: 'Fashion Shoot', src: '/videos/fashion.mp4' },
-  { id: 3, title: 'Cars', src: '/videos/cars.mp4' },
+  { id: 3, title: 'Cars Photography', src: '/videos/cars.mp4' },
   { id: 4, title: 'Food Photography', src: '/videos/food.mp4' },
 ]
 
