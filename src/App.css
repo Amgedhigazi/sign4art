@@ -92,7 +92,7 @@
 /* GRIDS */
 .grid { display: grid; gap: 1.5rem; }
 .grid--4 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-.grid--3 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.grid--3 { grid-template-columns: repeat(3, minmax(0, 360px)); justify-content: center; }
 .grid--2 { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); }
 
 /* PRODUCT CARD */

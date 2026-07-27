@@ -87,7 +87,7 @@ const EVENTS = [
     date: 'Saturday, September 3',
     location: 'Sign2art Studio',
     type: 'In-Person',
-    img: '/images/c0977b_e0cf047cffd84e82a3b48dc6176841a0~mv2.jpg',
+    img: '/images/c0977b_b920f679359b4eb9938296fc354a1956~mv2.jpg',
   },
   {
     id: 3,
@@ -95,7 +95,7 @@ const EVENTS = [
     date: 'Monday, November 14',
     location: 'Online',
     type: 'Zoom',
-    img: '/images/c0977b_b920f679359b4eb9938296fc354a1956~mv2.jpg',
+    img: '/images/c0977b_e0cf047cffd84e82a3b48dc6176841a0~mv2.jpg',
   },
 ]
 
