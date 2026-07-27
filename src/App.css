@@ -206,7 +206,7 @@
 
 /* VIDEOS */
 .video-card { display: flex; flex-direction: column; gap: 0.75rem; }
-.video-card__frame { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 6px; background: #000; }
+.video-card__frame { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 6px; background: #000; display: block; }
 .video-card__placeholder {
   width: 100%;
   aspect-ratio: 16/9;
@@ -260,6 +260,13 @@
 .footer__socials { display: flex; gap: 1.5rem; }
 .footer__socials a { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; transition: color 0.2s; }
 .footer__socials a:hover { color: var(--gold); }
+
+/* EVENT MODAL EXTRAS */
+.modal--event { grid-template-columns: 1fr 1fr; }
+.event-modal__badge { display: inline-block; background: var(--gold); color: #0a0a0a; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.7rem; border-radius: 2px; margin-bottom: 0.5rem; }
+.event-modal__date { font-size: 0.9rem; color: var(--gold); }
+.event-modal__loc { font-size: 0.9rem; color: var(--muted); }
+.event-modal__instructor { font-size: 0.88rem; color: var(--muted); }
 
 /* PRODUCT MODAL */
 .modal-overlay {

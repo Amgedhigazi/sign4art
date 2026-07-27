@@ -77,32 +77,47 @@ const EVENTS = [
     id: 1,
     title: 'Portrait Photography Workshop',
     date: 'Saturday, August 13',
-    location: 'Bochum',
+    location: 'ON Studio, Steinring 18, 44789 Bochum',
     type: 'In-Person',
     img: '/images/c0977b_b21d9d1964c446d8a404f7f2d63ba30e~mv2.jpg',
+    description: 'This workshop focuses on the fundamentals of portrait photography. Lighting is a crucial factor in depicting an individual — we explore the element of light and how to find the right exposure time to capture a compelling portrait.',
+    instructor: 'Amged Higazi',
   },
   {
     id: 2,
     title: 'Portrait Photography Lighting Workshop',
     date: 'Saturday, September 3',
-    location: 'Sign2art Studio',
+    location: 'Sign2art Studio, Steinring 18, 44789 Bochum',
     type: 'In-Person',
     img: '/images/c0977b_b920f679359b4eb9938296fc354a1956~mv2.jpg',
+    description: 'Learn portrait photography skills for capturing family moments and professional business portraits. You will learn to work with both natural light and studio flash as Karl guides you through the techniques needed to take stunning portraits in any lighting situation.',
+    instructor: 'Karl',
   },
   {
     id: 3,
     title: 'FoodBorno',
     date: 'Monday, November 14',
-    location: 'Online',
+    location: 'Online — Zoom',
     type: 'Zoom',
     img: '/images/c0977b_e0cf047cffd84e82a3b48dc6176841a0~mv2.jpg',
+    description: 'Since the rise of Instagram and the internet gave way to food bloggers and foodies galore, more than ever people are taking pictures of their meals. This session explores food photography as both a hobby and a professional pursuit — how to shoot food that looks as good as it tastes.',
+    instructor: 'Sign4Art',
   },
 ]
 
-// TODO: Replace VIDEO_IDS with your actual YouTube video IDs
 const VIDEOS = [
-  { id: 1, title: 'Shooot Eince', youtubeId: 'YOUR_VIDEO_ID_1', duration: '0:31' },
-  { id: 2, title: 'Workshop Highlights', youtubeId: 'YOUR_VIDEO_ID_2', duration: '' },
+  {
+    id: 1,
+    title: 'Shooot Eince',
+    duration: '0:31',
+    wixId: '74a06c5753224c0fa5a83c197395fa21',
+  },
+  {
+    id: 2,
+    title: 'Workshop Highlights',
+    duration: '',
+    wixId: '00d30499c53c4129a67fc4e476eed0a3',
+  },
 ]
 
 const NAV_LINKS = [
@@ -118,6 +133,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false)
   const [modal, setModal] = useState(null)
   const [activeImg, setActiveImg] = useState(0)
+  const [eventModal, setEventModal] = useState(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -133,7 +149,13 @@ export default function App() {
 
   const closeModal = useCallback(() => {
     setModal(null)
+    setEventModal(null)
     document.body.style.overflow = ''
+  }, [])
+
+  const openEventModal = useCallback((event) => {
+    setEventModal(event)
+    document.body.style.overflow = 'hidden'
   }, [])
 
   useEffect(() => {
@@ -247,7 +269,7 @@ export default function App() {
           </div>
           <div className="grid grid--3">
             {EVENTS.map(e => (
-              <article key={e.id} className="event-card">
+              <article key={e.id} className="event-card" onClick={() => openEventModal(e)} style={{ cursor: 'pointer' }}>
                 <div className="event-card__img-wrap">
                   <img src={e.img} alt={e.title} className="event-card__img" loading="lazy" />
                   <span className="event-card__badge">{e.type}</span>
@@ -258,10 +280,7 @@ export default function App() {
                   <p className="event-card__loc">📍 {e.location}</p>
                 </div>
                 <div className="event-card__footer">
-                  <a
-                    href={`mailto:sign2art@gmail.com?subject=Event Registration: ${e.title}`}
-                    className="btn btn--gold btn--sm"
-                  >Register</a>
+                  <span className="btn btn--gold btn--sm">View Details</span>
                 </div>
               </article>
             ))}
@@ -279,19 +298,20 @@ export default function App() {
           <div className="grid grid--2">
             {VIDEOS.map(v => (
               <div key={v.id} className="video-card">
-                {v.youtubeId && v.youtubeId !== 'YOUR_VIDEO_ID_1' && v.youtubeId !== 'YOUR_VIDEO_ID_2' ? (
-                  <iframe
+                {v.wixId ? (
+                  <video
                     className="video-card__frame"
-                    src={`https://www.youtube.com/embed/${v.youtubeId}`}
-                    title={v.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                    controls
+                    preload="metadata"
+                    poster={`https://video.wixstatic.com/video/${v.wixId}/resampled/poster/file.jpg`}
+                  >
+                    <source src={`https://video.wixstatic.com/video/${v.wixId}/720p/mp4/file.mp4`} type="video/mp4" />
+                    <source src={`https://video.wixstatic.com/video/${v.wixId}/480p/mp4/file.mp4`} type="video/mp4" />
+                  </video>
                 ) : (
                   <div className="video-card__placeholder">
                     <span className="video-card__play">▶</span>
                     <p>{v.title}</p>
-                    <small>YouTube ID needed</small>
                   </div>
                 )}
                 <p className="video-card__title">{v.title}{v.duration && <span className="video-card__dur"> · {v.duration}</span>}</p>
@@ -387,6 +407,34 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* EVENT MODAL */}
+      {eventModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal modal--event" onClick={e => e.stopPropagation()}>
+            <button className="modal__close" onClick={closeModal} aria-label="Close">✕</button>
+            <div className="modal__gallery">
+              <div className="modal__main-img">
+                <img src={eventModal.img} alt={eventModal.title} />
+              </div>
+            </div>
+            <div className="modal__info">
+              <span className="event-modal__badge">{eventModal.type}</span>
+              <h2 className="modal__name">{eventModal.title}</h2>
+              <p className="event-modal__date">📅 {eventModal.date}</p>
+              <p className="event-modal__loc">📍 {eventModal.location}</p>
+              {eventModal.instructor && (
+                <p className="event-modal__instructor">👤 Instructor: <strong>{eventModal.instructor}</strong></p>
+              )}
+              <p className="modal__desc">{eventModal.description}</p>
+              <a
+                href={`mailto:sign2art@gmail.com?subject=Event Inquiry: ${eventModal.title}`}
+                className="btn btn--gold"
+              >Register / Inquire</a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* PRODUCT MODAL */}
       {modal && (
