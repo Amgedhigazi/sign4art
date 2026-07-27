@@ -1,0 +1,197 @@
+import React, { useState, useEffect } from 'react'
+import './App.css'
+
+const PRODUCTS = [
+  { id: 1, name: 'Canon AE-1', price: '€250', img: '/images/c0977b_2a07218a7fec49c381db4db2b388fb12~mv2.jpg', tag: 'SLR 35mm' },
+  { id: 2, name: 'Canon T50', price: '€100', img: '/images/c0977b_e61fb9dec2594919a97cb94e440eb6f3~mv2.jpg', tag: 'SLR 35mm' },
+  { id: 3, name: 'Praktica Super TL', price: '€150', img: '/images/c0977b_6ba1814f97bf4e458cc1aa9f686e0c7e~mv2.jpg', tag: 'SLR 35mm' },
+  { id: 4, name: 'Minolta Dynax 505 Si', price: '€50', img: '/images/c0977b_372b888c834a48f8889d07c19b2cf96d~mv2.jpg', tag: 'SLR 35mm' },
+]
+
+const EVENTS = [
+  { id: 1, title: 'Portrait Photography Workshop', date: 'Aug 13', location: 'Bochum', type: 'In-Person' },
+  { id: 2, title: 'Portrait Photography Lighting Workshop', date: 'Sep 3', location: 'Sign2art Studio', type: 'In-Person' },
+  { id: 3, title: 'FoodBorno', date: 'Nov 14', location: 'Online', type: 'Zoom' },
+]
+
+const NAV_LINKS = ['Home', 'Shop', 'Events', 'About', 'Contact']
+
+export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const scrollTo = (id) => {
+    setMenuOpen(false)
+    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  return (
+    <div className="app">
+
+      {/* NAV */}
+      <nav className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
+        <div className="nav__logo" onClick={() => scrollTo('home')}>
+          <span className="nav__logo-icon">⬡</span>
+          <span>Sign<strong>4</strong>Art</span>
+        </div>
+        <ul className={`nav__links ${menuOpen ? 'nav__links--open' : ''}`}>
+          {NAV_LINKS.map(l => (
+            <li key={l}><button onClick={() => scrollTo(l)}>{l}</button></li>
+          ))}
+        </ul>
+        <button className="nav__burger" onClick={() => setMenuOpen(o => !o)}>
+          <span /><span /><span />
+        </button>
+      </nav>
+
+      {/* HERO */}
+      <section id="home" className="hero">
+        <div className="hero__grain" />
+        <div className="hero__content">
+          <p className="hero__eyebrow">Analog Photography • Bochum</p>
+          <h1 className="hero__title">
+            Take Your<br /><em>Gear Out.</em>
+          </h1>
+          <p className="hero__sub">Don't miss your shot — everything you need for analog photography.</p>
+          <div className="hero__ctas">
+            <button className="btn btn--gold" onClick={() => scrollTo('Shop')}>Browse Cameras</button>
+            <button className="btn btn--outline" onClick={() => scrollTo('Events')}>Upcoming Events</button>
+          </div>
+        </div>
+        <div className="hero__shutter" />
+      </section>
+
+      {/* SHOP */}
+      <section id="shop" className="section">
+        <div className="section__inner">
+          <div className="section__head">
+            <span className="section__label">For Sale</span>
+            <h2 className="section__title">Vintage Cameras</h2>
+            <p className="section__desc">Curated analog cameras in working condition. Contact us to purchase.</p>
+          </div>
+          <div className="grid grid--4">
+            {PRODUCTS.map(p => (
+              <article key={p.id} className="card">
+                <div className="card__img-wrap">
+                  <img src={p.img} alt={p.name} className="card__img" loading="lazy" />
+                  <span className="card__tag">{p.tag}</span>
+                </div>
+                <div className="card__body">
+                  <h3 className="card__name">{p.name}</h3>
+                  <div className="card__footer">
+                    <span className="card__price">{p.price}</span>
+                    <a href={`mailto:sign2art@gmail.com?subject=Interested in ${p.name}`}
+                      className="btn btn--sm btn--gold">Inquire</a>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* EVENTS */}
+      <section id="events" className="section section--alt">
+        <div className="section__inner">
+          <div className="section__head">
+            <span className="section__label">Join Us</span>
+            <h2 className="section__title">Events & Workshops</h2>
+            <p className="section__desc">Hands-on photography workshops and community events in Bochum and online.</p>
+          </div>
+          <div className="grid grid--3">
+            {EVENTS.map(e => (
+              <article key={e.id} className="event-card">
+                <div className="event-card__date">{e.date}</div>
+                <div className="event-card__body">
+                  <span className="event-card__type">{e.type}</span>
+                  <h3 className="event-card__title">{e.title}</h3>
+                  <p className="event-card__loc">📍 {e.location}</p>
+                </div>
+                <a href={`mailto:sign2art@gmail.com?subject=Event Registration: ${e.title}`}
+                  className="btn btn--outline btn--sm">Register</a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="section">
+        <div className="section__inner section__inner--about">
+          <div className="about__text">
+            <span className="section__label">Our Story</span>
+            <h2 className="section__title">Capturing Moments,<br />One Frame at a Time</h2>
+            <p>Sign4Art is an analog photography studio and store based in Bochum, Germany. We believe in the patience, intention and craft that film photography demands.</p>
+            <p>Whether you're picking up your first 35mm camera or deepening your darkroom practice, we're here to supply, teach and inspire.</p>
+            <div className="about__stats">
+              <div><strong>35mm</strong><span>Film cameras</span></div>
+              <div><strong>Bochum</strong><span>Based in Germany</span></div>
+              <div><strong>Workshops</strong><span>All skill levels</span></div>
+            </div>
+          </div>
+          <div className="about__img-wrap">
+            <img src="/images/c0977b_f776a9f1bee04c7d8e8d2e6dee440e76~mv2.jpg" alt="Analog camera" />
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" className="section section--alt">
+        <div className="section__inner">
+          <div className="section__head">
+            <span className="section__label">Get in Touch</span>
+            <h2 className="section__title">Contact Us</h2>
+          </div>
+          <div className="contact__grid">
+            <div className="contact__info">
+              <div className="contact__item">
+                <span className="contact__icon">📍</span>
+                <div><strong>Studio</strong><br />Steinring 18<br />44789 Bochum, Germany</div>
+              </div>
+              <div className="contact__item">
+                <span className="contact__icon">✉️</span>
+                <div><strong>Email</strong><br /><a href="mailto:sign2art@gmail.com">sign2art@gmail.com</a></div>
+              </div>
+              <div className="contact__item">
+                <span className="contact__icon">📞</span>
+                <div><strong>Phone</strong><br /><a href="tel:+4917624172640">+49 176 24172640</a></div>
+              </div>
+              <div className="contact__socials">
+                <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://www.facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://www.youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+                </a>
+              </div>
+            </div>
+            <form className="contact__form" onSubmit={e => { e.preventDefault(); window.location.href = 'mailto:sign2art@gmail.com?subject=Message from Sign4Art site&body=' + encodeURIComponent(e.target.message.value) }}>
+              <input name="name" className="form__input" placeholder="Your name" required />
+              <input name="email" type="email" className="form__input" placeholder="Your email" required />
+              <textarea name="message" className="form__input form__textarea" placeholder="Your message" rows="5" required />
+              <button type="submit" className="btn btn--gold">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="footer__inner">
+          <div className="footer__logo">Sign<strong>4</strong>Art</div>
+          <p className="footer__copy">© {new Date().getFullYear()} Sign4Art, Bochum. All rights reserved.</p>
+        </div>
+      </footer>
+
+    </div>
+  )
+}
