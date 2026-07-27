@@ -268,21 +268,21 @@
 .event-page {
   position: fixed;
   inset: 0;
-  background: var(--bg);
   z-index: 150;
-  overflow-y: auto;
-}
-.event-page__hero {
-  position: relative;
-  height: 480px;
   overflow: hidden;
 }
-.event-page__hero img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
-.event-page__hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7)); }
+.event-page__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.event-page__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+.event-page__hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5)); }
 .event-page__back {
   position: absolute;
-  top: 90px;
+  top: 96px;
   left: 2rem;
+  z-index: 10;
   background: rgba(0,0,0,0.5);
   color: #fff;
   border: 1px solid rgba(255,255,255,0.4);
@@ -294,10 +294,19 @@
   transition: background 0.2s;
 }
 .event-page__back:hover { background: rgba(0,0,0,0.8); }
+.event-page__scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  z-index: 1;
+}
+.event-page__spacer { height: 55vh; }
 
 .event-page__body {
-  max-width: 1100px;
-  margin: 0 auto;
+  background: var(--bg);
+  border-radius: 16px 16px 0 0;
+  min-height: 60vh;
+  max-width: 100%;
   padding: 3rem 2.5rem 5rem;
   display: grid;
   grid-template-columns: 1.2fr 1fr;
