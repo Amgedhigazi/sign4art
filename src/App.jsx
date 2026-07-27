@@ -437,11 +437,12 @@ export default function App() {
       {/* EVENT DETAIL PAGE */}
       {eventPage && (
         <div className="event-page">
-          <div className="event-page__hero">
+          <div className="event-page__bg">
             <img src={eventPage.img} alt={eventPage.title} />
             <div className="event-page__hero-overlay" />
-            <button className="event-page__back" onClick={closeEventPage}>← Back to Events</button>
           </div>
+          <button className="event-page__back" onClick={closeEventPage}>← Back to Events</button>
+          <div className="event-page__spacer" />
           <div className="event-page__body">
             <div className="event-page__info">
               <span className="event-modal__badge">{eventPage.type}</span>

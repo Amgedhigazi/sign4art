@@ -268,22 +268,23 @@
 .event-page {
   position: fixed;
   inset: 0;
-  z-index: 150;
-  overflow: hidden;
+  z-index: 9999;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .event-page__bg {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 0;
 }
 .event-page__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
-.event-page__hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5)); }
+.event-page__hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.55)); }
 .event-page__back {
-  position: absolute;
-  top: 96px;
-  left: 2rem;
-  z-index: 10;
-  background: rgba(0,0,0,0.5);
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 10000;
+  background: rgba(0,0,0,0.55);
   color: #fff;
   border: 1px solid rgba(255,255,255,0.4);
   padding: 0.5rem 1.25rem;
@@ -293,20 +294,15 @@
   backdrop-filter: blur(4px);
   transition: background 0.2s;
 }
-.event-page__back:hover { background: rgba(0,0,0,0.8); }
-.event-page__scroll {
-  position: absolute;
-  inset: 0;
-  overflow-y: auto;
-  z-index: 1;
-}
-.event-page__spacer { height: 55vh; }
+.event-page__back:hover { background: rgba(0,0,0,0.85); }
+.event-page__spacer { height: 60vh; position: relative; z-index: 1; }
 
 .event-page__body {
+  position: relative;
+  z-index: 1;
   background: var(--bg);
   border-radius: 16px 16px 0 0;
-  min-height: 60vh;
-  max-width: 100%;
+  min-height: 80vh;
   padding: 3rem 2.5rem 5rem;
   display: grid;
   grid-template-columns: 1.2fr 1fr;
