@@ -133,7 +133,9 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false)
   const [modal, setModal] = useState(null)
   const [activeImg, setActiveImg] = useState(0)
-  const [eventModal, setEventModal] = useState(null)
+  const [eventPage, setEventPage] = useState(null)
+  const [formSent, setFormSent] = useState(false)
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' })
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -149,14 +151,27 @@ export default function App() {
 
   const closeModal = useCallback(() => {
     setModal(null)
-    setEventModal(null)
     document.body.style.overflow = ''
   }, [])
 
-  const openEventModal = useCallback((event) => {
-    setEventModal(event)
-    document.body.style.overflow = 'hidden'
+  const openEventPage = useCallback((event) => {
+    setEventPage(event)
+    setFormSent(false)
+    setFormData({ name: '', email: '', phone: '', message: '' })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
+
+  const closeEventPage = useCallback(() => {
+    setEventPage(null)
+    setFormSent(false)
+  }, [])
+
+  const handleRegister = (e) => {
+    e.preventDefault()
+    const body = `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nMessage: ${formData.message}`
+    window.location.href = `mailto:sign2art@gmail.com?subject=Registration: ${eventPage.title}&body=${encodeURIComponent(body)}`
+    setFormSent(true)
+  }
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') closeModal() }
@@ -269,7 +284,7 @@ export default function App() {
           </div>
           <div className="grid grid--3">
             {EVENTS.map(e => (
-              <article key={e.id} className="event-card" onClick={() => openEventModal(e)} style={{ cursor: 'pointer' }}>
+              <article key={e.id} className="event-card" onClick={() => openEventPage(e)} style={{ cursor: 'pointer' }}>
                 <div className="event-card__img-wrap">
                   <img src={e.img} alt={e.title} className="event-card__img" loading="lazy" />
                   <span className="event-card__badge">{e.type}</span>
@@ -408,29 +423,82 @@ export default function App() {
         </div>
       </footer>
 
-      {/* EVENT MODAL */}
-      {eventModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal modal--event" onClick={e => e.stopPropagation()}>
-            <button className="modal__close" onClick={closeModal} aria-label="Close">✕</button>
-            <div className="modal__gallery">
-              <div className="modal__main-img">
-                <img src={eventModal.img} alt={eventModal.title} />
+      {/* EVENT DETAIL PAGE */}
+      {eventPage && (
+        <div className="event-page">
+          <div className="event-page__hero">
+            <img src={eventPage.img} alt={eventPage.title} />
+            <div className="event-page__hero-overlay" />
+            <button className="event-page__back" onClick={closeEventPage}>← Back to Events</button>
+          </div>
+          <div className="event-page__body">
+            <div className="event-page__info">
+              <span className="event-modal__badge">{eventPage.type}</span>
+              <h1 className="event-page__title">{eventPage.title}</h1>
+              <div className="event-page__meta">
+                <div><span>📅</span><div><strong>Date</strong><p>{eventPage.date}</p></div></div>
+                <div><span>📍</span><div><strong>Location</strong><p>{eventPage.location}</p></div></div>
+                {eventPage.instructor && <div><span>👤</span><div><strong>Instructor</strong><p>{eventPage.instructor}</p></div></div>}
               </div>
+              <p className="event-page__desc">{eventPage.description}</p>
             </div>
-            <div className="modal__info">
-              <span className="event-modal__badge">{eventModal.type}</span>
-              <h2 className="modal__name">{eventModal.title}</h2>
-              <p className="event-modal__date">📅 {eventModal.date}</p>
-              <p className="event-modal__loc">📍 {eventModal.location}</p>
-              {eventModal.instructor && (
-                <p className="event-modal__instructor">👤 Instructor: <strong>{eventModal.instructor}</strong></p>
+
+            <div className="event-page__form-wrap">
+              <h2 className="event-page__form-title">Register for this Event</h2>
+              {formSent ? (
+                <div className="event-page__success">
+                  <span>✓</span>
+                  <p>Registration sent! We'll get back to you soon.</p>
+                </div>
+              ) : (
+                <form className="event-page__form" onSubmit={handleRegister}>
+                  <div className="form-group">
+                    <label>Full Name *</label>
+                    <input
+                      className="form__input"
+                      type="text"
+                      placeholder="Your full name"
+                      value={formData.name}
+                      onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Email Address *</label>
+                    <input
+                      className="form__input"
+                      type="email"
+                      placeholder="your@email.com"
+                      value={formData.email}
+                      onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Phone Number</label>
+                    <input
+                      className="form__input"
+                      type="tel"
+                      placeholder="+49 ..."
+                      value={formData.phone}
+                      onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Message / Questions</label>
+                    <textarea
+                      className="form__input form__textarea"
+                      placeholder="Any questions or notes..."
+                      rows="4"
+                      value={formData.message}
+                      onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
+                    />
+                  </div>
+                  <button type="submit" className="btn btn--gold" style={{ width: '100%' }}>
+                    Send Registration
+                  </button>
+                </form>
               )}
-              <p className="modal__desc">{eventModal.description}</p>
-              <a
-                href={`mailto:sign2art@gmail.com?subject=Event Inquiry: ${eventModal.title}`}
-                className="btn btn--gold"
-              >Register / Inquire</a>
             </div>
           </div>
         </div>
