@@ -134,6 +134,7 @@ export default function App() {
   const [modal, setModal] = useState(null)
   const [activeImg, setActiveImg] = useState(0)
   const [eventPage, setEventPage] = useState(null)
+  const [pkgPage, setPkgPage] = useState(null)
   const [formSent, setFormSent] = useState(false)
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' })
 
@@ -166,10 +167,23 @@ export default function App() {
     setFormSent(false)
   }, [])
 
+  const openPkgPage = useCallback((pkg) => {
+    setPkgPage(pkg)
+    setFormSent(false)
+    setFormData({ name: '', email: '', phone: '', message: '' })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
+  const closePkgPage = useCallback(() => {
+    setPkgPage(null)
+    setFormSent(false)
+  }, [])
+
   const handleRegister = (e) => {
     e.preventDefault()
+    const subject = eventPage ? `Registration: ${eventPage.title}` : `Package Inquiry: ${pkgPage.name}`
     const body = `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nMessage: ${formData.message}`
-    window.location.href = `mailto:sign2art@gmail.com?subject=Registration: ${eventPage.title}&body=${encodeURIComponent(body)}`
+    window.location.href = `mailto:sign2art@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     setFormSent(true)
   }
 
@@ -256,7 +270,7 @@ export default function App() {
           </div>
           <div className="grid grid--3">
             {PACKAGES.map(pkg => (
-              <div key={pkg.id} className={`pkg-card ${pkg.highlight ? 'pkg-card--highlight' : ''}`}>
+              <div key={pkg.id} className={`pkg-card ${pkg.highlight ? 'pkg-card--highlight' : ''}`} onClick={() => openPkgPage(pkg)} style={{ cursor: 'pointer' }}>
                 {pkg.highlight && <div className="pkg-card__badge">Most Popular</div>}
                 <h3 className="pkg-card__name">{pkg.name}</h3>
                 <p className="pkg-card__price">{pkg.price}</p>
@@ -265,10 +279,7 @@ export default function App() {
                     <li key={item}><span className="pkg-card__check">✓</span>{item}</li>
                   ))}
                 </ul>
-                <a
-                  href={`mailto:sign2art@gmail.com?subject=Package Inquiry: ${pkg.name}`}
-                  className={`btn ${pkg.highlight ? 'btn--gold' : 'btn--outline'}`}
-                >Inquire</a>
+                <span className={`btn ${pkg.highlight ? 'btn--gold' : 'btn--outline'}`}>View & Inquire</span>
               </div>
             ))}
           </div>
@@ -497,6 +508,62 @@ export default function App() {
                   <button type="submit" className="btn btn--gold" style={{ width: '100%' }}>
                     Send Registration
                   </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PACKAGE DETAIL PAGE */}
+      {pkgPage && (
+        <div className="event-page">
+          <div className="event-page__hero event-page__hero--pkg">
+            <div className="event-page__hero-overlay" />
+            <button className="event-page__back" onClick={closePkgPage}>← Back to Packages</button>
+            <div className="pkg-page__hero-content">
+              <h1 className="pkg-page__hero-title">{pkgPage.name}</h1>
+              <p className="pkg-page__hero-price">{pkgPage.price}</p>
+            </div>
+          </div>
+          <div className="event-page__body">
+            <div className="event-page__info">
+              <h2 className="event-page__title">What's Included</h2>
+              <ul className="pkg-page__items">
+                {pkgPage.items.map(item => (
+                  <li key={item}><span>✓</span>{item}</li>
+                ))}
+              </ul>
+              <p className="event-page__desc" style={{ marginTop: '1.5rem' }}>
+                Contact us to discuss availability and to customise the package to your needs. All packages include a personal consultation before purchase.
+              </p>
+            </div>
+            <div className="event-page__form-wrap">
+              <h2 className="event-page__form-title">Inquire About This Package</h2>
+              {formSent ? (
+                <div className="event-page__success">
+                  <span>✓</span>
+                  <p>Inquiry sent! We'll get back to you soon.</p>
+                </div>
+              ) : (
+                <form className="event-page__form" onSubmit={handleRegister}>
+                  <div className="form-group">
+                    <label>Full Name *</label>
+                    <input className="form__input" type="text" placeholder="Your full name" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} required />
+                  </div>
+                  <div className="form-group">
+                    <label>Email Address *</label>
+                    <input className="form__input" type="email" placeholder="your@email.com" value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} required />
+                  </div>
+                  <div className="form-group">
+                    <label>Phone Number</label>
+                    <input className="form__input" type="tel" placeholder="+49 ..." value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} />
+                  </div>
+                  <div className="form-group">
+                    <label>Message / Questions</label>
+                    <textarea className="form__input form__textarea" placeholder="Any questions or custom requirements..." rows="4" value={formData.message} onChange={e => setFormData(p => ({ ...p, message: e.target.value }))} />
+                  </div>
+                  <button type="submit" className="btn btn--gold" style={{ width: '100%' }}>Send Inquiry</button>
                 </form>
               )}
             </div>
