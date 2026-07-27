@@ -108,15 +108,13 @@ const EVENTS = [
 const VIDEOS = [
   {
     id: 1,
-    title: 'Shooot Eince',
-    duration: '0:31',
-    wixId: '74a06c5753224c0fa5a83c197395fa21',
+    title: 'Workshop Highlights',
+    src: '/videos/events.mp4',
   },
   {
     id: 2,
-    title: 'Workshop Highlights',
-    duration: '',
-    wixId: '00d30499c53c4129a67fc4e476eed0a3',
+    title: 'Fashion Shoot',
+    src: '/videos/fashion.mp4',
   },
 ]
 
@@ -327,23 +325,13 @@ export default function App() {
           <div className="grid grid--2">
             {VIDEOS.map(v => (
               <div key={v.id} className="video-card">
-                {v.wixId ? (
-                  <video
-                    className="video-card__frame"
-                    controls
-                    preload="metadata"
-                    poster={`https://video.wixstatic.com/video/${v.wixId}/resampled/poster/file.jpg`}
-                  >
-                    <source src={`https://video.wixstatic.com/video/${v.wixId}/720p/mp4/file.mp4`} type="video/mp4" />
-                    <source src={`https://video.wixstatic.com/video/${v.wixId}/480p/mp4/file.mp4`} type="video/mp4" />
-                  </video>
-                ) : (
-                  <div className="video-card__placeholder">
-                    <span className="video-card__play">▶</span>
-                    <p>{v.title}</p>
-                  </div>
-                )}
-                <p className="video-card__title">{v.title}{v.duration && <span className="video-card__dur"> · {v.duration}</span>}</p>
+                <video
+                  className="video-card__frame"
+                  controls
+                  preload="metadata"
+                  src={v.src}
+                />
+                <p className="video-card__title">{v.title}</p>
               </div>
             ))}
           </div>
